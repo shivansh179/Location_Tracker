@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'landing_page.dart';
 import 'all_users_map_screen.dart';
 import 'location_screen.dart';
+import './about_us.dart';
+import './contact_us.dart';
 
 class AttendanceListScreen extends StatelessWidget {
   final List<Map<String, dynamic>> members = [
@@ -34,7 +36,8 @@ class AttendanceListScreen extends StatelessWidget {
         title: const Text('Attendance Tracker'),
       ),
       drawer: Drawer(
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             const UserAccountsDrawerHeader(
               accountName: Text("Shivansh Shukla"),
@@ -75,14 +78,20 @@ class AttendanceListScreen extends StatelessWidget {
               leading: const Icon(Icons.info),
               title: const Text('About Us'),
               onTap: () {
-                Navigator.pop(context); // Close drawer and stay on the same page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AboutUsScreen()),
+                );
               },
-            ),   
+            ),
             ListTile(
               leading: const Icon(Icons.call),
               title: const Text('Contact Us'),
               onTap: () {
-                Navigator.pop(context); // Close drawer and stay on the same page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ContactUsScreen()),
+                );
               },
             ),
           ],

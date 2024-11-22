@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'attendance_list_screen.dart';
 import 'all_users_map_screen.dart';
+import './about_us.dart';
+import './contact_us.dart';
+import './license_page.dart' as custom_license;
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -13,7 +16,8 @@ class LandingPage extends StatelessWidget {
         backgroundColor: Colors.blueGrey,
       ),
       drawer: Drawer(
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             Container(
               color: Colors.blueGrey,
@@ -29,10 +33,7 @@ class LandingPage extends StatelessWidget {
               leading: const Icon(Icons.home, color: Colors.blueGrey),
               title: const Text('Landing Page'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LandingPage()),
-                );
+                Navigator.pop(context); // Close drawer
               },
             ),
             ListTile(
@@ -52,6 +53,37 @@ class LandingPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AttendanceListScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info, color: Colors.indigo),
+              title: const Text('About Us'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AboutUsScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.contact_phone, color: Colors.green),
+              title: const Text('Contact Us'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ContactUsScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.description, color: Colors.blueGrey),
+              title: const Text('License'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const custom_license.LicensePage()),
                 );
               },
             ),
@@ -123,7 +155,10 @@ class LandingPage extends StatelessWidget {
                   },
                   child: const Text(
                     'Go to Attendance',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
               ),
@@ -148,7 +183,10 @@ class LandingPage extends StatelessWidget {
                   },
                   child: const Text(
                     'View All Users on Map',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
               ),
