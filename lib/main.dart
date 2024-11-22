@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:location_formatter/screen/attendance_list_screen.dart';
+import './screen/landing_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,14 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Location Tracker',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:  AttendanceListScreen(), // Correctly imported and used
-      debugShowCheckedModeBanner: false,
+      title: 'Map Tracker App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const LandingPage(), // Set the landing page as the default screen
     );
   }
 }
-
- 

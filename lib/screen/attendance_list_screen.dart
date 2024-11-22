@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'landing_page.dart';
+import 'all_users_map_screen.dart';
 import 'location_screen.dart';
 
 class AttendanceListScreen extends StatelessWidget {
@@ -43,18 +45,32 @@ class AttendanceListScreen extends StatelessWidget {
               decoration: BoxDecoration(color: Colors.blue),
             ),
             ListTile(
-              leading: const Icon(Icons.timer),
-              title: const Text('Timer'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.calendar_today),
-              title: const Text('Attendance'),
+              leading: const Icon(Icons.home),
+              title: const Text('Landing Page'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LandingPage()),
+                );
               },
             ),
-            // Add more navigation options as required.
+            ListTile(
+              leading: const Icon(Icons.map),
+              title: const Text('All Users Map'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllUsersMapScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.people),
+              title: const Text('Attendance'),
+              onTap: () {
+                Navigator.pop(context); // Close drawer and stay on the same page
+              },
+            ),
           ],
         ),
       ),

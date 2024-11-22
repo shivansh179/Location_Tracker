@@ -15,7 +15,6 @@ class LocationScreen extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _LocationScreenState createState() => _LocationScreenState();
 }
 
@@ -113,29 +112,100 @@ class _LocationScreenState extends State<LocationScreen> {
                 ),
                 MarkerLayer(
                   markers: [
-                    // Current location marker
+                    // Current location marker with custom widget
                     Marker(
                       point: LatLng(
                         currentLocation['latitude'],
                         currentLocation['longitude'],
                       ),
-                      child: const Icon(
-                        Icons.location_on,
-                        color: Colors.red,
-                        size: 30,
+                      width: 100,
+                      height: 100,
+                      child: Column(
+                        children: [
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 25,
+                                backgroundColor: Colors.blue.withOpacity(0.3),
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage: AssetImage("assets/shivansh.jpg"), // Replace with the user's profile image
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 4,
+                                      )
+                                    ],
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  child: const Text(
+                                    '5 min ago', // Replace with actual time
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    // Markers for visited locations
+                    // Visited locations with custom widgets
                     ...visitedLocations.map<Marker>(
                       (location) => Marker(
                         point: LatLng(
                           location['latitude'],
                           location['longitude'],
                         ),
-                        child: const Icon(
-                          Icons.place,
-                          color: Colors.blue,
-                          size: 20,
+                        width: 100,
+                        height: 100,
+                        child: Column(
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.blue.withOpacity(0.3),
+                                  child: const Icon(
+                                    Icons.place,
+                                    color: Colors.blue,
+                                    size: 30,
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4,
+                                        )
+                                      ],
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    child: Text(
+                                      '${DateTime.parse(location['timestamp']).hour}:${DateTime.parse(location['timestamp']).minute} ${DateTime.parse(location['timestamp']).hour > 11 ? 'PM' : 'AM'}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
