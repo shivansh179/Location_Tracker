@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'location_screen.dart';
 
 class AttendanceListScreen extends StatelessWidget {
-  // List of members with their details
   final List<Map<String, dynamic>> members = [
     {
       'id': '1',
@@ -35,18 +34,13 @@ class AttendanceListScreen extends StatelessWidget {
       drawer: Drawer(
         child: Column(
           children: [
-            // Updated UserAccountsDrawerHeader with an image
             const UserAccountsDrawerHeader(
               accountName: Text("Shivansh Shukla"),
               accountEmail: Text("shivansh.shukla@example.com"),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage("assets/shivansh.jpg"), // Local image
-                // Use Image.network if you have an online image:
-                // backgroundImage: NetworkImage("https://example.com/my_picture.jpg"),
+                backgroundImage: AssetImage("assets/shivansh.jpg"),
               ),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
+              decoration: BoxDecoration(color: Colors.blue),
             ),
             ListTile(
               leading: const Icon(Icons.timer),
@@ -60,41 +54,7 @@ class AttendanceListScreen extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.bar_chart),
-              title: const Text('Activity'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.pie_chart),
-              title: const Text('Timesheet'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.report),
-              title: const Text('Report'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.location_on),
-              title: const Text('Jobsite'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.group),
-              title: const Text('Team'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.beach_access),
-              title: const Text('Time Off'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.schedule),
-              title: const Text('Schedules'),
-              onTap: () {},
-            ),
+            // Add more navigation options as required.
           ],
         ),
       ),
@@ -118,14 +78,14 @@ class AttendanceListScreen extends StatelessWidget {
                         builder: (context) => LocationScreen(
                           memberId: member['id'],
                           memberName: member['name'],
-                          showRoute: false, // Shows only current location
+                          showRoute: false,
                         ),
                       ),
                     );
                   },
                 ),
                 IconButton(
-                  icon: const Icon(Icons.map, color: Color.fromARGB(255, 184, 22, 63)),
+                  icon: const Icon(Icons.map, color: Colors.red),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -133,7 +93,7 @@ class AttendanceListScreen extends StatelessWidget {
                         builder: (context) => LocationScreen(
                           memberId: member['id'],
                           memberName: member['name'],
-                          showRoute: true, // Shows traveled route and locations
+                          showRoute: true,
                         ),
                       ),
                     );

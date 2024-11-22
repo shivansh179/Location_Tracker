@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class LocationScreen extends StatelessWidget {
+class LocationScreen extends StatefulWidget {
   final String memberId;
   final String memberName;
   final bool showRoute;
 
-  LocationScreen({
+  const LocationScreen({
     super.key,
     required this.memberId,
     required this.memberName,
     required this.showRoute,
   });
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LocationScreenState createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  DateTime selectedDate = DateTime.now();
 
   // Hardcoded data for members
   final Map<String, dynamic> memberData = {
@@ -65,9 +73,22 @@ class LocationScreen extends StatelessWidget {
     },
   };
 
+  List<Map<String, dynamic>> filterLocationsByDate(
+      List<dynamic> locations, DateTime date) {
+    return locations
+        .where((location) {
+          final timestamp = DateTime.parse(location['timestamp']);
+          return timestamp.year == date.year &&
+              timestamp.month == date.month &&
+              timestamp.day == date.day;
+        })
+        .toList()
+        .cast<Map<String, dynamic>>();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final member = memberData[memberId];
+    final member = memberData[widget.memberId];
 
     if (member == null) {
       return Scaffold(
@@ -77,26 +98,47 @@ class LocationScreen extends StatelessWidget {
     }
 
     final currentLocation = member['current_location'];
-    final visitedLocations = member['visited_locations'];
-    final routePoints = visitedLocations
-        .map<LatLng>((location) => LatLng(location['latitude'], location['longitude']))
-        .toList();
+    final allVisitedLocations = member['visited_locations'];
+    final filteredLocations =
+        filterLocationsByDate(allVisitedLocations, selectedDate);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(memberName),
+        title: Text(widget.memberName),
       ),
       body: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.calendar_today),
+                onPressed: () async {
+                  final pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate,
+                    firstDate: DateTime(2020),
+                    lastDate: DateTime.now(),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      selectedDate = pickedDate;
+                    });
+                  }
+                },
+              ),
+              Text(
+                'Selected Date: ${selectedDate.toLocal().toString().split(' ')[0]}',
+              ),
+            ],
+          ),
           Expanded(
             child: FlutterMap(
               options: MapOptions(
-                initialCenter: showRoute
-                    ? (routePoints.isNotEmpty ? routePoints[0] : const LatLng(0, 0))
-                    : LatLng(
-                        currentLocation['latitude'],
-                        currentLocation['longitude'],
-                      ),
+                initialCenter: LatLng(
+                  currentLocation['latitude'],
+                  currentLocation['longitude'],
+                ),
                 initialZoom: 13.0,
               ),
               children: [
@@ -106,7 +148,6 @@ class LocationScreen extends StatelessWidget {
                 ),
                 MarkerLayer(
                   markers: [
-                    // Current location marker
                     Marker(
                       point: LatLng(
                         currentLocation['latitude'],
@@ -118,29 +159,31 @@ class LocationScreen extends StatelessWidget {
                         size: 30,
                       ),
                     ),
-                    // Visited locations (only if showRoute is true)
-                    if (showRoute)
-                      ...visitedLocations.map<Marker>(
-                        (location) => Marker(
-                          point: LatLng(
-                            location['latitude'],
-                            location['longitude'],
-                          ),
-                          child: const Icon(
-                            Icons.place,
-                            color: Colors.blue,
-                            size: 20,
-                          ),
+                    ...filteredLocations.map<Marker>(
+                      (location) => Marker(
+                        point: LatLng(
+                          location['latitude'],
+                          location['longitude'],
+                        ),
+                        child: const Icon(
+                          Icons.place,
+                          color: Colors.blue,
+                          size: 20,
                         ),
                       ),
+                    ),
                   ],
                 ),
-                // Draw polyline for the route (only if showRoute is true)
-                if (showRoute && routePoints.isNotEmpty)
+                if (widget.showRoute)
                   PolylineLayer(
                     polylines: [
                       Polyline(
-                        points: routePoints,
+                        points: filteredLocations
+                            .map<LatLng>((loc) => LatLng(
+                                  loc['latitude'],
+                                  loc['longitude'],
+                                ))
+                            .toList(),
                         strokeWidth: 4.0,
                         color: Colors.blue,
                       ),
@@ -149,22 +192,21 @@ class LocationScreen extends StatelessWidget {
               ],
             ),
           ),
-          // Show timeline of visited locations (only if showRoute is true)
-          if (showRoute)
-            Expanded(
-              child: ListView.builder(
-                itemCount: visitedLocations.length,
-                itemBuilder: (context, index) {
-                  final location = visitedLocations[index];
-                  return ListTile(
-                    leading: const Icon(Icons.location_on, color: Colors.blue),
-                    title: Text(location['address']),
-                    subtitle: Text(
-                        'Visited at ${DateTime.parse(location['timestamp']).toLocal()}'),
-                  );
-                },
-              ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredLocations.length,
+              itemBuilder: (context, index) {
+                final location = filteredLocations[index];
+                return ListTile(
+                  leading: const Icon(Icons.location_on, color: Colors.blue),
+                  title: Text(location['address']),
+                  subtitle: Text(
+                    'Visited at ${DateTime.parse(location['timestamp']).toLocal()}',
+                  ),
+                );
+              },
             ),
+          ),
         ],
       ),
     );
