@@ -15,6 +15,7 @@ class LocationScreen extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _LocationScreenState createState() => _LocationScreenState();
 }
 
@@ -128,7 +129,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               CircleAvatar(
                                 radius: 25,
                                 backgroundColor: Colors.blue.withOpacity(0.3),
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   radius: 20,
                                   backgroundImage: AssetImage("assets/shivansh.jpg"), // Replace with the user's profile image
                                 ),
