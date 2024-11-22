@@ -71,6 +71,20 @@ class AttendanceListScreen extends StatelessWidget {
                 Navigator.pop(context); // Close drawer and stay on the same page
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('About Us'),
+              onTap: () {
+                Navigator.pop(context); // Close drawer and stay on the same page
+              },
+            ),   
+            ListTile(
+              leading: const Icon(Icons.call),
+              title: const Text('Contact Us'),
+              onTap: () {
+                Navigator.pop(context); // Close drawer and stay on the same page
+              },
+            ),
           ],
         ),
       ),
